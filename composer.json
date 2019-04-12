@@ -1,0 +1,30 @@
+{
+  "name": "halfik/laravel-fakturowo",
+  "description": "Laravel package to fakturowo.pl API",
+  "type": "library",
+  "keywords"  : [
+    "fakutorowo.pl",
+    "api",
+    "php",
+    "laravel"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": ">=7.1",
+    "guzzlehttp/guzzle": "^6.0.0",
+    "laravel/framework": ">=5.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Halfik\\Fakturowo\\": "src/"
+    }
+  },
+  "homepage": "https://github.com/halfik/laravel-fakturowo",
+  "authors": [
+    {
+      "name": "halfik",
+      "email": "halfik@pm.me"
+    }
+  ],
+  "minimum-stability": "dev"
+}

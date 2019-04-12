@@ -1,2 +1,2 @@
-# laravel-fakturowo
-Laravel package for fakturowo.pl API
+# Fakturowo.pl API
+Paczka do komunikacji z API fakturowo.pl
