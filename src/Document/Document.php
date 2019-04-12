@@ -13,10 +13,19 @@ class Document
 {
     /** @var int */
     protected $documentType;
+    /** @var int */
+    protected $documentDesignation;
+
+    /** @var Language */
+    protected $documentLanguage;
+    /** @var SecondLanguage|null */
+    protected $documentSecondLanguage;
+
     /** @var string */
     protected $documentNr;
     /** @var bool */
     protected $documentNrShow;
+
     /** @var Seller */
     protected $seller;
     /** @var Buyer */
@@ -38,6 +47,8 @@ class Document
     protected function __construct(int $documentType)
     {
         $this->documentType = $documentType;
+        $this->documentDesignation = 0;
+        $this->documentLanguage = Language::polish();
     }
 
     /**
@@ -259,7 +270,6 @@ class Document
         return new self(49);
     }
 
-
     /**
      * @return Document
      */
@@ -293,6 +303,7 @@ class Document
     }
 
     /**
+     * @param bool $vat
      * @return Document
      */
     public static function createFinalMarginInvoice(bool $vat = false): self
@@ -311,6 +322,67 @@ class Document
         return new self(62);
     }
 
+    /**
+     * @return Document
+     */
+    public function markAsOriginal(): self
+    {
+        $this->documentDesignation = 1;
+        return $this;
+    }
+
+    /**
+     * @return Document
+     */
+    public function markAsCopy(): self
+    {
+        $this->documentDesignation = 2;
+        return $this;
+    }
+
+    /**
+     * @return Document
+     */
+    public function markAsOriginalCopy(): self
+    {
+        $this->documentDesignation = 3;
+        return $this;
+    }
+
+    /**
+     * @return Document
+     */
+    public function markAsDuplicate(): self
+    {
+        $this->documentDesignation = 4;
+        return $this;
+    }
+
+    /**
+     * @return Document
+     */
+    public function markAsOriginalDuplicate(): self
+    {
+        $this->documentDesignation = 5;
+        return $this;
+    }
+
+    /**
+     * @return Document
+     */
+    public function markAsCopyDuplicate(): self
+    {
+        $this->documentDesignation = 5;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function documentDesignation(): int
+    {
+        return $this->documentDesignation;
+    }
 
     /**
      * @param IssuePlace $issuePlace
@@ -336,6 +408,42 @@ class Document
     public function documentNr()
     {
         return $this->documentNr;
+    }
+
+    /**
+     * @return Language
+     */
+    public function documentLanguage(): Language
+    {
+        return $this->documentLanguage;
+    }
+
+    /**
+     * @param Language $documentLanguage
+     * @return Document
+     */
+    public function setDocumentLanguage(Language $documentLanguage): Document
+    {
+        $this->documentLanguage = $documentLanguage;
+        return $this;
+    }
+
+    /**
+     * @return SecondLanguage
+     */
+    public function documentSecondLanguage(): ?SecondLanguage
+    {
+        return $this->documentSecondLanguage;
+    }
+
+    /**
+     * @param SecondLanguage $documentLanguage
+     * @return Document
+     */
+    public function setDocumentSecondLanguage(SecondLanguage $documentLanguage): Document
+    {
+        $this->documentSecondLanguage = $documentLanguage;
+        return $this;
     }
 
     /**
@@ -455,6 +563,8 @@ class Document
             'dokument_numer' => $this->documentNr(),
             'dokument_pokaz_numer' => (int) $this->documentNrShow,
             'dokument_rodzaj' => $this->documentType(),
+            'dokument_oznaczenie' => $this->documentDesignation(),
+
         ];
 
         // issue date
@@ -471,6 +581,14 @@ class Document
 
         // buyer
         $data = array_merge($data, $this->buyer()->toArray());
+
+        // lang
+        $data = array_merge($data, $this->documentLanguage()->toArray());
+
+        // second lang
+        if ($this->documentSecondLanguage()) {
+            $data = array_merge($data, $this->documentSecondLanguage()->toArray());
+        }
 
         return $data;
     }
