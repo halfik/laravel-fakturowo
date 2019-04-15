@@ -27,7 +27,7 @@ Przykład użycia:
                 'ul. kupiecka 12'
             );
             $buyer = new Fakturowo\Document\Participant\Buyer(
-                'Kupujacy AddDocumentTest',
+                'Kupujacy Adam',
                 Fakturowo\Document\Participant\ParticipantId::nip('7979391584'),
                 $buyerAddress
             );
@@ -39,7 +39,7 @@ Przykład użycia:
                 'ul. sprzedawcy 6a'
             );
             $seller = new Fakturowo\Document\Participant\Seller(
-                'Sprzedajacy AddDocumentTest',
+                'Sprzedajacy Stefan',
                 Fakturowo\Document\Participant\ParticipantId::pesel('91021971851'),
                 $sellerAddress
             );
