@@ -5,6 +5,7 @@ namespace Halfik\Fakturowo\Document;
 use Halfik\Fakturowo\Document\Participant\Buyer;
 use Halfik\Fakturowo\Document\Participant\Seller;
 use Halfik\Fakturowo\Document\Payment\Payment;
+use Halfik\Fakturowo\Document\Product\Product;
 
 /**
  * Class Document
@@ -53,6 +54,12 @@ class Document
     /** @var IssuePlace|null  */
     protected $issuePlace;
 
+    /** @var array  */
+    protected $products = [];
+
+    /** @var int */
+    protected $status;
+
     /**
      * Document constructor.
      * @param int $documentType
@@ -63,6 +70,25 @@ class Document
         $this->documentDesignation = 0;
         $this->documentLanguage = Language::polish();
         $this->setDocumentNr('');
+        $this->status = 0;
+    }
+
+    /**
+     * @return Document
+     */
+    public function statusToBeIssued(): self
+    {
+        $this->status = 1;
+        return $this;
+    }
+
+    /**
+     * @return Document
+     */
+    public function statusExpected(): self
+    {
+        $this->status = 0;
+        return $this;
     }
 
     /**
@@ -641,6 +667,15 @@ class Document
         return $this;
     }
 
+    /**
+     * @param Product $product
+     * @return Document
+     */
+    public function addProduct(Product $product): self
+    {
+        $this->products[] = $product;
+        return $this;
+    }
 
     /**
      * @return array
@@ -648,6 +683,7 @@ class Document
     public final function toArray(): array
     {
         $data = [
+            'api_status' => $this->status,
             'dokument_numer' => $this->documentNr(),
             'dokument_pokaz_numer' => (int) $this->documentNrShow,
             'dokument_rodzaj' => $this->documentType(),
@@ -708,6 +744,16 @@ class Document
         // currency exchange
         if ($this->currencyExchange()) {
             $data = array_merge($data, $this->currencyExchange()->toArray());
+        }
+
+        /** @var Product $product */
+        foreach ($this->products as $i => $product) {
+            $postFix = '';
+            if ($i > 0) {
+                $postFix = sprintf("_%d", $i+1);
+            }
+
+            $data = array_merge($data, $product->toArray($postFix));
         }
 
 

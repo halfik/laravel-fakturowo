@@ -260,7 +260,6 @@ abstract class Participant
             sprintf('%s_fax', $this->prefix()) => $this->fax(),
             sprintf('%s_www', $this->prefix()) => $this->www(),
             sprintf('%s_oznaczenie', $this->prefix()) => $this->markedAs(),
-            sprintf('%s_dane', $this->prefix()) => $this->address(),
             sprintf('%s_dane_oznaczenie', $this->prefix()) => $this->markedAs(),
         ];
 

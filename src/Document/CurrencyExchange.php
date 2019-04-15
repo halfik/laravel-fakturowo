@@ -37,23 +37,30 @@ class CurrencyExchange
     /**
      * CurrencyExchange constructor.
      * @param int $source
+     * @param string $exchangeToCurrency
      * @param \DateTimeImmutable|null $exchangeDate
      * @param float|null $exchangeCourse
      */
-    protected function __construct(int $source, ?\DateTimeImmutable $exchangeDate, ?float $exchangeCourse)
+    protected function __construct(
+        int $source,
+        string $exchangeToCurrency,
+        ?\DateTimeImmutable $exchangeDate,
+        ?float $exchangeCourse
+    )
     {
         $this->source = $source;
         $this->exchangeDate = $exchangeDate;
         $this->exchangeCourse = $exchangeCourse;
+        $this->exchangeTo($exchangeToCurrency);
     }
 
     /**
      * @param string $currencyIso
      * @return CurrencyExchange
      */
-    public function exchangeTo(string $currencyIso): self
+    protected function exchangeTo(string $currencyIso): self
     {
-        if (in_array($currencyIso, $this->supportedCurrencies)) {
+        if (!in_array($currencyIso, $this->supportedCurrencies)) {
             throw new \InvalidArgumentException("$currencyIso is not supported");
         }
 
@@ -63,20 +70,22 @@ class CurrencyExchange
 
     /**
      * @param \DateTimeImmutable $exchangeDate
+     * @param string $exchangeToCurrency
      * @return static
      */
-    public static function sourceNBP(\DateTimeImmutable $exchangeDate)
+    public static function sourceNBP(\DateTimeImmutable $exchangeDate, string $exchangeToCurrency)
     {
-        return new static(0, $exchangeDate, null);
+        return new static(0, $exchangeToCurrency, $exchangeDate, null);
     }
 
     /**
      * @param float $exchangeCourse
+     * @param string $exchangeToCurrency
      * @return static
      */
-    public static function sourceOwn(float $exchangeCourse)
+    public static function sourceOwn(float $exchangeCourse, string $exchangeToCurrency)
     {
-        return new static(1, null, $exchangeCourse);
+        return new static(1, $exchangeToCurrency, null, $exchangeCourse);
     }
 
     /**

@@ -18,6 +18,19 @@ class Product
     protected $price;
 
     /**
+     * Product constructor.
+     * @param string $name
+     * @param Quantity $quantity
+     * @param Price $price
+     */
+    public function __construct(string $name, Quantity $quantity, Price $price)
+    {
+        $this->setName($name);
+        $this->setQuantity($quantity);
+        $this->setPrice($price);
+    }
+
+    /**
      * @return string
      */
     public function name(): string
@@ -27,10 +40,12 @@ class Product
 
     /**
      * @param string $name
+     * @return self
      */
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -43,10 +58,12 @@ class Product
 
     /**
      * @param Quantity $quantity
+     * @return self
      */
-    public function setQuantity(Quantity $quantity): void
+    public function setQuantity(Quantity $quantity): self
     {
         $this->quantity = $quantity;
+        return $this;
     }
 
     /**
@@ -59,25 +76,26 @@ class Product
 
     /**
      * @param Price $price
-     * @return Product
+     * @return self
      */
-    public function setPrice(Price $price): Product
+    public function setPrice(Price $price): self
     {
         $this->price = $price;
         return $this;
     }
 
     /**
+     * @param string $postFix
      * @return array
      */
-    public function toArray(): array
+    public function toArray(string $postFix = ''): array
     {
         $data = [
-            'produkt_nazwa' => $this->name(),
+            "produkt_nazwa$postFix" => $this->name(),
         ];
 
-        $data = array_merge($data, $this->quantity()->toArray());
-        $data = array_merge($data, $this->price()->toArray());
+        $data = array_merge($data, $this->quantity()->toArray($postFix));
+        $data = array_merge($data, $this->price()->toArray($postFix));
 
         return $data;
     }

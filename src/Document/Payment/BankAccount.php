@@ -19,7 +19,7 @@ class BankAccount
      * @param string $number
      * @param bool $show
      */
-    public function __construct(string $number, bool $show = true)
+    public function __construct(string $number, bool $show = false)
     {
         $this->setNumber($number);
         $this->setShow($show);
@@ -60,6 +60,4 @@ class BankAccount
         $this->show = $show;
         return $this;
     }
-
-
 }

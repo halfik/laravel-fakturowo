@@ -48,18 +48,19 @@ class Price
     }
 
     /**
+     * @param string $postFix
      * @return array
      */
-    public function toArray(): array
+    public function toArray(string $postFix = ''): array
     {
         $data = [
-            'produkt_stawka_vat' => $this->vatRate
+            "produkt_stawka_vat$postFix" => $this->vatRate
         ];
 
         if ($this->isGross) {
-            $data['produkt_wartosc_brutto'] = $this->value;
+            $data["produkt_wartosc_brutto$postFix"] = $this->value;
         } else {
-            $data['produkt_cena_netto'] = $this->value;
+            $data["produkt_cena_netto$postFix"] = $this->value;
         }
 
         return $data;

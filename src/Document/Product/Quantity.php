@@ -474,13 +474,14 @@ class Quantity
     }
 
     /**
+     * @param $postFix
      * @return array
      */
-    public function toArray(): array
+    public function toArray(string $postFix = ''): array
     {
         return [
-            'produkt_jm' => $this->unit,
-            'produkt_ilosc' => $this->quantity,
+            "produkt_jm$postFix" => $this->unit,
+            "produkt_ilosc$postFix" => $this->quantity,
         ];
     }
 }
