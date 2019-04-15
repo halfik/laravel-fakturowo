@@ -44,7 +44,7 @@ class Fakturowo
     public function newDocument(Document $document): string
     {
         $response = $this->client->request('POST', '', $this->prepareData($document, 1));
-
+        dd($response);
         return json_decode($response->getBody()->getContents());
     }
 

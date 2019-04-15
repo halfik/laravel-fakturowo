@@ -17,10 +17,10 @@ class Document
     /** @var int */
     protected $documentDesignation;
 
-    /** @var Email */
+    /** @var Email|null  */
     protected $email;
 
-    /** @var Language */
+    /** @var Language|null  */
     protected $documentLanguage;
     /** @var SecondLanguage|null */
     protected $documentSecondLanguage;
@@ -36,21 +36,21 @@ class Document
     /** @var CurrencyExchange|null */
     protected $currencyExchange;
 
-    /** @var Note */
+    /** @var Note|null  */
     protected $note;
 
-    /** @var Seller */
+    /** @var Seller|null  */
     protected $seller;
-    /** @var Buyer */
+    /** @var Buyer|null  */
     protected $buyer;
 
-    /** @var IssueDate */
+    /** @var IssueDate|null */
     protected $issueDate;
 
-    /** @var SalesDate */
+    /** @var SalesDate|null  */
     protected $salesDate;
 
-    /** @var IssuePlace */
+    /** @var IssuePlace|null  */
     protected $issuePlace;
 
     /**
@@ -62,6 +62,7 @@ class Document
         $this->documentType = $documentType;
         $this->documentDesignation = 0;
         $this->documentLanguage = Language::polish();
+        $this->setDocumentNr('');
     }
 
     /**
@@ -409,9 +410,9 @@ class Document
     }
 
     /**
-     * @return IssuePlace
+     * @return IssuePlace|null
      */
-    public function issuePlace(): IssuePlace
+    public function issuePlace(): ?IssuePlace
     {
         return $this->issuePlace;
     }
@@ -425,9 +426,9 @@ class Document
     }
 
     /**
-     * @return Language
+     * @return Language|null
      */
-    public function documentLanguage(): Language
+    public function documentLanguage(): ?Language
     {
         return $this->documentLanguage;
     }
@@ -443,7 +444,7 @@ class Document
     }
 
     /**
-     * @return SecondLanguage
+     * @return SecondLanguage|null
      */
     public function documentSecondLanguage(): ?SecondLanguage
     {
@@ -489,9 +490,9 @@ class Document
     }
 
     /**
-     * @return Seller
+     * @return Seller|null
      */
-    public function seller(): Seller
+    public function seller(): ?Seller
     {
         return $this->seller;
     }
@@ -507,9 +508,9 @@ class Document
     }
 
     /**
-     * @return Buyer
+     * @return Buyer|null
      */
-    public function buyer(): Buyer
+    public function buyer(): ?Buyer
     {
         return $this->buyer;
     }
@@ -545,9 +546,9 @@ class Document
     }
 
     /**
-     * @return IssueDate
+     * @return IssueDate|null
      */
-    public function issueDate(): IssueDate
+    public function issueDate(): ?IssueDate
     {
         return $this->issueDate;
     }
@@ -555,7 +556,7 @@ class Document
     /**
      * @return SalesDate
      */
-    public function salesDate(): SalesDate
+    public function salesDate(): ?SalesDate
     {
         return $this->salesDate;
     }
@@ -569,9 +570,9 @@ class Document
     }
 
     /**
-     * @return Payment
+     * @return Payment|null
      */
-    public function payment(): Payment
+    public function payment(): ?Payment
     {
         return $this->payment;
     }
@@ -587,9 +588,9 @@ class Document
     }
 
     /**
-     * @return Note
+     * @return Note|null
      */
-    public function note(): Note
+    public function note(): ?Note
     {
         return $this->note;
     }
@@ -605,9 +606,9 @@ class Document
     }
 
     /**
-     * @return Email
+     * @return Email|null
      */
-    public function email(): Email
+    public function email(): ?Email
     {
         return $this->email;
     }
@@ -655,22 +656,34 @@ class Document
         ];
 
         // issue date
-        $data = array_merge($data, $this->issueDate()->toArray());
+        if ($this->issueDate()) {
+            $data = array_merge($data, $this->issueDate()->toArray());
+        }
 
         // issue place
-        $data = array_merge($data, $this->issuePlace()->toArray());
+        if ($this->issuePlace()) {
+            $data = array_merge($data, $this->issuePlace()->toArray());
+        }
 
         // sales data
-        $data = array_merge($data, $this->salesDate()->toArray());
+        if ($this->salesDate()) {
+            $data = array_merge($data, $this->salesDate()->toArray());
+        }
 
         // seller
-        $data = array_merge($data, $this->seller()->toArray());
+        if ($this->seller()) {
+            $data = array_merge($data, $this->seller()->toArray());
+        }
 
         // buyer
-        $data = array_merge($data, $this->buyer()->toArray());
+        if ($this->buyer()) {
+            $data = array_merge($data, $this->buyer()->toArray());
+        }
 
         // lang
-        $data = array_merge($data, $this->documentLanguage()->toArray());
+        if ($this->documentLanguage()) {
+            $data = array_merge($data, $this->documentLanguage()->toArray());
+        }
 
         // second lang
         if ($this->documentSecondLanguage()) {
@@ -678,10 +691,14 @@ class Document
         }
 
         // payment
-        $data = array_merge($data, $this->payment()->toArray());
+        if ($this->payment()) {
+            $data = array_merge($data, $this->payment()->toArray());
+        }
 
         // notes
-        $data = array_merge($data, $this->note()->toArray());
+        if ($this->note()) {
+            $data = array_merge($data, $this->note()->toArray());
+        }
 
         // email
         if ($this->email()) {

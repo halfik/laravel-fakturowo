@@ -12,7 +12,7 @@ abstract class Participant
     protected $name;
     /** @var ParticipantId */
     protected $id;
-    /** @var IdCard */
+    /** @var IdCard|null */
     protected $idCard;
     /** @var Address */
     protected $address;
@@ -24,17 +24,24 @@ abstract class Participant
     protected $fax;
     /** @var string */
     protected $www;
-    /** @var Signature */
+    /** @var Signature|null */
     protected $signature;
     /** @var int */
     protected $markedAs;
     /** @var string */
     protected $additionalData;
 
-
-    public function __construct(string $name)
+    /**
+     * Participant constructor.
+     * @param string $name
+     * @param ParticipantId $id
+     * @param Address $address
+     */
+    public function __construct(string $name, ParticipantId $id, Address $address)
     {
+        $this->id = $id;
         $this->name = $name;
+        $this->address = $address;
         $this->email = '';
         $this->phone = '';
         $this->fax = '';
@@ -52,7 +59,7 @@ abstract class Participant
     /**
      * @return ParticipantId
      */
-    public function getId(): ParticipantId
+    public function id(): ParticipantId
     {
         return $this->id;
     }
@@ -70,7 +77,7 @@ abstract class Participant
     /**
      * @return string
      */
-    public function getName(): string
+    public function name(): string
     {
         return $this->name;
     }
@@ -86,9 +93,9 @@ abstract class Participant
     }
 
     /**
-     * @return IdCard
+     * @return IdCard|null
      */
-    public function getIdCard(): IdCard
+    public function idCard(): ?IdCard
     {
         return $this->idCard;
     }
@@ -106,7 +113,7 @@ abstract class Participant
     /**
      * @return Address
      */
-    public function getAddress(): Address
+    public function address(): Address
     {
         return $this->address;
     }
@@ -124,7 +131,7 @@ abstract class Participant
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function email(): string
     {
         return $this->email;
     }
@@ -140,7 +147,7 @@ abstract class Participant
     /**
      * @return string
      */
-    public function getPhone(): string
+    public function phone(): string
     {
         return $this->phone;
     }
@@ -156,7 +163,7 @@ abstract class Participant
     /**
      * @return string
      */
-    public function getFax(): string
+    public function fax(): string
     {
         return $this->fax;
     }
@@ -172,7 +179,7 @@ abstract class Participant
     /**
      * @return string
      */
-    public function getWww(): string
+    public function www(): string
     {
         return $this->www;
     }
@@ -188,7 +195,7 @@ abstract class Participant
     /**
      * @return Signature
      */
-    public function getSignature(): Signature
+    public function signature(): ?Signature
     {
         return $this->signature;
     }
@@ -204,7 +211,7 @@ abstract class Participant
     /**
      * @return int
      */
-    public function getMarkedAs(): int
+    public function markedAs(): int
     {
         return $this->markedAs;
     }
@@ -212,7 +219,7 @@ abstract class Participant
     /**
      * @return string
      */
-    public function getAdditionalData(): string
+    public function additionalData(): string
     {
         return $this->additionalData;
     }
@@ -247,43 +254,43 @@ abstract class Participant
     public function toArray(): array
     {
         $data = [
-            sprintf('%s_nazwa', $this->prefix()) => $this->getName(),
-            sprintf('%s_email', $this->prefix()) => $this->getEmail(),
-            sprintf('%s_telefon', $this->prefix()) => $this->getPhone(),
-            sprintf('%s_fax', $this->prefix()) => $this->getFax(),
-            sprintf('%s_www', $this->prefix()) => $this->getWww(),
-            sprintf('%s_oznaczenie', $this->prefix()) => $this->getMarkedAs(),
-            sprintf('%s_dane', $this->prefix()) => $this->getAdditionalData(),
-            sprintf('%s_dane_oznaczenie', $this->prefix()) => $this->getMarkedAs(),
+            sprintf('%s_nazwa', $this->prefix()) => $this->name(),
+            sprintf('%s_email', $this->prefix()) => $this->email(),
+            sprintf('%s_telefon', $this->prefix()) => $this->phone(),
+            sprintf('%s_fax', $this->prefix()) => $this->fax(),
+            sprintf('%s_www', $this->prefix()) => $this->www(),
+            sprintf('%s_oznaczenie', $this->prefix()) => $this->markedAs(),
+            sprintf('%s_dane', $this->prefix()) => $this->address(),
+            sprintf('%s_dane_oznaczenie', $this->prefix()) => $this->markedAs(),
         ];
 
         // Id
         $data = array_merge(
             $data,
-            $this->getId()->toArray($this->prefix())
+            $this->id()->toArray($this->prefix())
         );
 
         // Id card
-        if ($this->getIdCard()) {
+        if ($this->idCard()) {
             $data = array_merge(
                 $data,
-                $this->getIdCard()->toArray($this->prefix())
+                $this->idCard()->toArray($this->prefix())
             );
         }
 
         // Address
-        if ($this->getAddress()) {
+        if ($this->address()) {
             $data = array_merge(
                 $data,
-                $this->getAddress()->toArray($this->prefix())
+                $this->address()->toArray($this->prefix())
             );
         }
 
         // Signature
-        if ($this->getSignature()) {
+        if ($this->signature()) {
             $data = array_merge(
                 $data,
-                $this->getSignature()->toArray($this->prefix())
+                $this->signature()->toArray($this->prefix())
             );
         }
 
