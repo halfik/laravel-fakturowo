@@ -26,6 +26,11 @@ class Document
     /** @var bool */
     protected $documentNrShow;
 
+    /** @var PaymentMethod */
+    protected $paymentMethod;
+    /** @var PaymentStatus */
+    protected $paymentStatus;
+
     /** @var Seller */
     protected $seller;
     /** @var Buyer */
@@ -60,6 +65,7 @@ class Document
     }
 
     /**
+     * @param bool $vat
      * @return Document
      */
     public static function createProformaInvoice(bool $vat = true): self
@@ -555,6 +561,42 @@ class Document
     }
 
     /**
+     * @return PaymentMethod
+     */
+    public function paymentMethod(): PaymentMethod
+    {
+        return $this->paymentMethod;
+    }
+
+    /**
+     * @param PaymentMethod $paymentMethod
+     * @return Document
+     */
+    public function setPaymentMethod(PaymentMethod $paymentMethod): Document
+    {
+        $this->paymentMethod = $paymentMethod;
+        return $this;
+    }
+
+    /**
+     * @return PaymentStatus
+     */
+    public function paymentStatus(): PaymentStatus
+    {
+        return $this->paymentStatus;
+    }
+
+    /**
+     * @param PaymentStatus $paymentStatus
+     * @return Document
+     */
+    public function setPaymentStatus(PaymentStatus $paymentStatus): Document
+    {
+        $this->paymentStatus = $paymentStatus;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public final function toArray(): array
@@ -589,6 +631,13 @@ class Document
         if ($this->documentSecondLanguage()) {
             $data = array_merge($data, $this->documentSecondLanguage()->toArray());
         }
+
+        // payment method
+        $data = array_merge($data, $this->paymentMethod()->toArray());
+
+        // payment status
+        $data = array_merge($data, $this->paymentStatus()->toArray());
+
 
         return $data;
     }
