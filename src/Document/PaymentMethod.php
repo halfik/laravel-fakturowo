@@ -11,6 +11,10 @@ class PaymentMethod
     /** @var int */
     protected $id;
 
+    /** @var bool */
+    protected $show;
+
+    /** @var array  */
     protected static $bankTransferDaysMap = [
         1 => 1,
         2 => 2,
@@ -43,183 +47,206 @@ class PaymentMethod
     /**
      * PaymentMethod constructor.
      * @param int $id
+     * @param bool $show
      */
-    protected function __construct(int $id)
+    protected function __construct(int $id, bool $show = true)
     {
         $this->id = $id;
+        $this->show = $show;
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function bankTransfer(): self
+    public static function bankTransfer(bool $show): self
     {
-        return new static(0);
+        return new static(0, $show);
     }
 
     /**
      * @param int $days
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function bankTransferDays(int $days): self
+    public static function bankTransferDays(int $days, bool $show): self
     {
         if (!array_key_exists($days, static::$bankTransferDaysMap)) {
             throw new \InvalidArgumentException("Unsupported value of days");
         }
 
-        return new static(static::$bankTransferDaysMap[$days]);
+        return new static(static::$bankTransferDaysMap[$days], $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function onDelivery(): self
+    public static function onDelivery(bool $show): self
     {
-       return new static(12);
+       return new static(12, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function cash(): self
+    public static function cash(bool $show): self
     {
-        return new static(13);
+        return new static(13, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function paidBankTransfer(): self
+    public static function paidBankTransfer(bool $show): self
     {
-        return new static(14);
+        return new static(14, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function paidCash(): self
+    public static function paidCash(bool $show): self
     {
-        return new static(15);
+        return new static(15, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function paidPayPal(): self
+    public static function paidPayPal(bool $show): self
     {
-        return new static(16);
+        return new static(16, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function paidDotPay(): self
+    public static function paidDotPay(bool $show): self
     {
-        return new static(17);
+        return new static(17, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function paidPayU(): self
+    public static function paidPayU(bool $show): self
     {
-        return new static(18);
+        return new static(18, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function paidCashBill(): self
+    public static function paidCashBill(bool $show): self
     {
-        return new static(19);
+        return new static(19, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function paidPrzelewy24(): self
+    public static function paidPrzelewy24(bool $show): self
     {
-        return new static(20);
+        return new static(20, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function paymentCard(): self
+    public static function paymentCard(bool $show): self
     {
-        return new static(21);
+        return new static(21, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function barter(): self
+    public static function barter(bool $show): self
     {
-        return new static(22);
+        return new static(22, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function check(): self
+    public static function check(bool $show): self
     {
-        return new static(23);
+        return new static(23, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function exchangeBill(): self
+    public static function exchangeBill(bool $show): self
     {
-        return new static(24);
+        return new static(24, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function compensation(): self
+    public static function compensation(bool $show): self
     {
-        return new static(25);
+        return new static(25, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function creditLetter(): self
+    public static function creditLetter(bool $show): self
     {
-        return new static(26);
+        return new static(26, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function settledWithPrepayment(): self
+    public static function settledWithPrepayment(bool $show): self
     {
-        return new static(27);
+        return new static(27, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function paymentTerminal(): self
+    public static function paymentTerminal(bool $show): self
     {
-        return new static(28);
+        return new static(28, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function loan(): self
+    public static function loan(bool $show): self
     {
-        return new static(29);
+        return new static(29, $show);
     }
 
     /**
+     * @param bool $show
      * @return PaymentMethod
      */
-    public static function internetPayment(): self
+    public static function internetPayment(bool $show): self
     {
-        return new static(31);
+        return new static(31, $show);
     }
 
     /**
@@ -229,6 +256,7 @@ class PaymentMethod
     {
         return [
             'dokument_zaplata' => $this->id,
+            'dokument_pokaz_zaplata' => (int) $this->show,
         ];
     }
 }
