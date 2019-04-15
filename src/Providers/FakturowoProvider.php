@@ -2,6 +2,7 @@
 
 namespace Halfik\Fakturowo\Providers;
 
+use Halfik\Fakturowo\Fakturowo;
 use \Illuminate\Support\ServiceProvider;
 
 /**
@@ -29,6 +30,9 @@ class FakturowoProvider extends ServiceProvider
     {
 
         $this->mergeConfigFrom(self::CONFIG_PATH, 'fakturowo');
+        $this->app->singleton('fakturowo.pl', function ($app) {
+            return new Fakturowo();
+        });
     }
 
     /**
@@ -48,6 +52,8 @@ class FakturowoProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [];
+        return [
+            Fakturowo::class
+        ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Halfik\Fakturowo;
 
 use GuzzleHttp\Client;
+use Halfik\Fakturowo\Document\Document;
 
 /**
  * Class Fakturowo
@@ -36,19 +37,31 @@ class Fakturowo
     }
 
     /**
-     * @param $method
-     * @param $url
-     * @param array $data
-     * @return mixed
+     * @param Document $document
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    private function execute($method, $url, array $data = [])
+    public function newDocument(Document $document): string
     {
-        $response = $this->client->request($method, $url, self::setData($method, $data));
+        $response = $this->client->request('POST', '', $this->prepareData($document, 1));
 
-        $status_code = $response->getStatusCode();
-        $response_body = json_decode($response->getBody()->getContents());
+        return json_decode($response->getBody()->getContents());
+    }
 
-        return $response_body;
+    /**
+     * @param Document $document
+     * @param int $status
+     * @return array
+     */
+    protected function prepareData(Document $document, int $status): array
+    {
+        $data = $document->toArray();
+
+        $data['api_id'] = $this->getActiveKey();
+        $data['api_status'] = $status;
+        $data['api_kodowanie'] = $this->config['api']['encoding'];
+
+        return $data;
     }
 
     /**
@@ -57,7 +70,7 @@ class Fakturowo
      */
     private function getUrl()
     {
-        return  $this->config['api.url'];
+        return  $this->config['api']['url'];
     }
 
     /**
@@ -66,6 +79,6 @@ class Fakturowo
      */
     private function getActiveKey()
     {
-        return  $this->config['api.key'];
+        return  $this->config['api']['key'];
     }
 }
