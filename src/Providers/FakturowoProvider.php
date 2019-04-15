@@ -10,7 +10,7 @@ use \Illuminate\Support\ServiceProvider;
  */
 class FakturowoProvider extends ServiceProvider
 {
-    const CONFIG_PATH = __DIR__.'/../config/fakturowo.php';
+    const CONFIG_PATH = __DIR__.'/../../config/fakturowo.php';
 
 
     /**
