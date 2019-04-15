@@ -24,15 +24,50 @@ class Fakturowo
      * @param Document $document
      * @return string
      */
-    public function newDocument(Document $document): string
+    public function new(Document $document): string
     {
+        $data = $this->prepareData($document);
+        $data['api_zadanie'] = 1;
 
+        return $this->execute($data);
+    }
+
+    /**
+     * @param Document $document
+     * @return string
+     */
+    public function newToBeIssued(Document $document): string
+    {
+        $data = $this->prepareData($document);
+        $data['api_status'] = 1;
+
+        return $this->execute($data);
+    }
+
+    /**
+     * @param Document $document
+     * @return string
+     */
+    public function newPending(Document $document): string
+    {
+        $data = $this->prepareData($document);
+        $data['api_status'] = 0;
+
+        return $this->execute($data);
+    }
+
+    /**
+     * @param array $data
+     * @return string
+     */
+    protected function execute(array  $data): string
+    {
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL, $this->getUrl());
         curl_setopt($ch,CURLOPT_POST,1);
         curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,300);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch,CURLOPT_POSTFIELDS,$this->prepareData($document));
+        curl_setopt($ch,CURLOPT_POSTFIELDS, $data);
         $result = curl_exec($ch);
         curl_close($ch);
 

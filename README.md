@@ -90,4 +90,4 @@ Przykład użycia:
                     ->setPayment($payment)
             ;
     
-            $result = $fakturowo->newDocument($document);
+            $result = $fakturowo->new($document);

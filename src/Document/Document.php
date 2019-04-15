@@ -57,9 +57,6 @@ class Document
     /** @var array  */
     protected $products = [];
 
-    /** @var int */
-    protected $status;
-
     /**
      * Document constructor.
      * @param int $documentType
@@ -70,25 +67,6 @@ class Document
         $this->documentDesignation = 0;
         $this->documentLanguage = Language::polish();
         $this->setDocumentNr('');
-        $this->status = 0;
-    }
-
-    /**
-     * @return Document
-     */
-    public function statusToBeIssued(): self
-    {
-        $this->status = 1;
-        return $this;
-    }
-
-    /**
-     * @return Document
-     */
-    public function statusExpected(): self
-    {
-        $this->status = 0;
-        return $this;
     }
 
     /**
@@ -683,7 +661,6 @@ class Document
     public final function toArray(): array
     {
         $data = [
-            'api_status' => $this->status,
             'dokument_numer' => $this->documentNr(),
             'dokument_pokaz_numer' => (int) $this->documentNrShow,
             'dokument_rodzaj' => $this->documentType(),
