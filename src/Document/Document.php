@@ -4,6 +4,7 @@ namespace Halfik\Fakturowo\Document;
 
 use Halfik\Fakturowo\Document\Participant\Buyer;
 use Halfik\Fakturowo\Document\Participant\Seller;
+use Halfik\Fakturowo\Document\Payment\Payment;
 
 /**
  * Class Document
@@ -16,6 +17,9 @@ class Document
     /** @var int */
     protected $documentDesignation;
 
+    /** @var Email */
+    protected $email;
+
     /** @var Language */
     protected $documentLanguage;
     /** @var SecondLanguage|null */
@@ -26,10 +30,14 @@ class Document
     /** @var bool */
     protected $documentNrShow;
 
-    /** @var PaymentMethod */
-    protected $paymentMethod;
-    /** @var PaymentStatus */
-    protected $paymentStatus;
+    /** @var Payment */
+    protected $payment;
+
+    /** @var CurrencyExchange|null */
+    protected $currencyExchange;
+
+    /** @var Note */
+    protected $note;
 
     /** @var Seller */
     protected $seller;
@@ -561,40 +569,77 @@ class Document
     }
 
     /**
-     * @return PaymentMethod
+     * @return Payment
      */
-    public function paymentMethod(): PaymentMethod
+    public function payment(): Payment
     {
-        return $this->paymentMethod;
+        return $this->payment;
     }
 
     /**
-     * @param PaymentMethod $paymentMethod
+     * @param Payment $payment
      * @return Document
      */
-    public function setPaymentMethod(PaymentMethod $paymentMethod): Document
+    public function setPayment(Payment $payment): Document
     {
-        $this->paymentMethod = $paymentMethod;
+        $this->payment = $payment;
         return $this;
     }
 
     /**
-     * @return PaymentStatus
+     * @return Note
      */
-    public function paymentStatus(): PaymentStatus
+    public function note(): Note
     {
-        return $this->paymentStatus;
+        return $this->note;
     }
 
     /**
-     * @param PaymentStatus $paymentStatus
+     * @param Note $note
      * @return Document
      */
-    public function setPaymentStatus(PaymentStatus $paymentStatus): Document
+    public function setNote(Note $note): Document
     {
-        $this->paymentStatus = $paymentStatus;
+        $this->note = $note;
         return $this;
     }
+
+    /**
+     * @return Email
+     */
+    public function email(): Email
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param Email $email
+     * @return Document
+     */
+    public function setEmail(Email $email): Document
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return CurrencyExchange|null
+     */
+    public function currencyExchange(): ?CurrencyExchange
+    {
+        return $this->currencyExchange;
+    }
+
+    /**
+     * @param CurrencyExchange|null $currencyExchange
+     * @return Document
+     */
+    public function setCurrencyExchange(?CurrencyExchange $currencyExchange): Document
+    {
+        $this->currencyExchange = $currencyExchange;
+        return $this;
+    }
+
 
     /**
      * @return array
@@ -632,11 +677,21 @@ class Document
             $data = array_merge($data, $this->documentSecondLanguage()->toArray());
         }
 
-        // payment method
-        $data = array_merge($data, $this->paymentMethod()->toArray());
+        // payment
+        $data = array_merge($data, $this->payment()->toArray());
 
-        // payment status
-        $data = array_merge($data, $this->paymentStatus()->toArray());
+        // notes
+        $data = array_merge($data, $this->note()->toArray());
+
+        // email
+        if ($this->email()) {
+            $data = array_merge($data, $this->email()->toArray());
+        }
+
+        // currency exchange
+        if ($this->currencyExchange()) {
+            $data = array_merge($data, $this->currencyExchange()->toArray());
+        }
 
 
         return $data;

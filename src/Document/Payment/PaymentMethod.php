@@ -1,10 +1,10 @@
 <?php
 
-namespace Halfik\Fakturowo\Document;
+namespace Halfik\Fakturowo\Document\Payment;
 
 /**
  * Class PaymentMethod
- * @package Halfik\Fakturowo\Document
+ * @package Halfik\Fakturowo\Document\Payment
  */
 class PaymentMethod
 {
