@@ -40,9 +40,9 @@ class Address
     {
         return [
             sprintf('%s_ulica', $prefix) => $this->street,
-            sprintf('%s_miasto', $prefix) => $this->street,
-            sprintf('%s_kod', $prefix) => $this->street,
-            sprintf('%s_panstwo', $prefix) => $this->street,
+            sprintf('%s_miasto', $prefix) => $this->city,
+            sprintf('%s_kod', $prefix) => $this->zipCode,
+            sprintf('%s_panstwo', $prefix) => $this->country,
         ];
     }
 }
