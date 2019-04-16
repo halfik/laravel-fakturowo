@@ -57,6 +57,9 @@ class Document
     /** @var array  */
     protected $products = [];
 
+    /** @var Currency */
+    protected $currency;
+
     /**
      * Document constructor.
      * @param int $documentType
@@ -656,6 +659,24 @@ class Document
     }
 
     /**
+     * @return Currency|null
+     */
+    public function currency(): ?Currency
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param Currency $currency
+     * @return Document
+     */
+    public function setCurrency(Currency $currency): Document
+    {
+        $this->currency = $currency;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public final function toArray(): array
@@ -667,6 +688,11 @@ class Document
             'dokument_oznaczenie' => $this->documentDesignation(),
 
         ];
+
+        // currency
+        if ($this->currency) {
+            $data['dokument_waluta'] = $this->currency->id();
+        }
 
         // issue date
         if ($this->issueDate()) {

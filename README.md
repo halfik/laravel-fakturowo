@@ -75,7 +75,8 @@ Przykład użycia:
                 new Fakturowo\Document\Payment\BankAccount('16249000056261910404297588')
             );
     
-            $document->setBuyer($buyer)
+            $document->setCurrency(new Fakturowo\Document\Currency('PLN'))
+                    ->setBuyer($buyer)
                     ->setSeller($seller)
                     ->setDocumentLanguage(Fakturowo\Document\Language::polish())
                     ->setIssuePlace($issuePlace)

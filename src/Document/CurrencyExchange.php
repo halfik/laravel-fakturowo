@@ -8,20 +8,6 @@ namespace Halfik\Fakturowo\Document;
  */
 class CurrencyExchange
 {
-    protected $supportedCurrencies = [
-        'PLN', 'EUR', 'USD', 'GBP', 'CHF', 'CAD', 'AUD', 'JPY', 'THB', 'HKD', 'NZD', 'SGD', 'HUF', 'UAH',
-        'CZK', 'DKK', 'ISK', 'NOK', 'SEK', 'HRK', 'RON', 'BGN', 'TRY', 'ILS', 'CLP', 'PHP', 'MXN', 'ZAR', 'BRL',
-        'MYR', 'RUB', 'IDR', 'INR', 'KRW', 'CNY', 'XDR', 'AED', 'AFN', 'MGA', 'PAB', 'ETB', 'VEF', 'BOB', 'CRC',
-        'SVC', 'NIO', 'GMD', 'MKD', 'DZD', 'BHD', 'IQD', 'JOD', 'KWD', 'LYD', 'RSD', 'TND', 'MAD', 'STD', 'BSD',
-        'BBD', 'BZD', 'BND', 'FJD', 'GYD', 'JMD', 'LRD', 'NAD', 'SRD', 'TTD', 'XCD', 'SBD', 'VND', 'AMD', 'CVE',
-        'AWG', 'BIF', 'XOF', 'XAF', 'XPF', 'DJF', 'GNF', 'KMF', 'CDF', 'RWF', 'EGP', 'GIP', 'LBP', 'SDG', 'SYP',
-        'GHS', 'HTG', 'PYG', 'ANG', 'PGK', 'LAK', 'MWK', 'ZMW', 'AOA', 'MMK', 'GEL', 'MDL', 'ALL', 'HNL', 'SLL',
-        'SZL', 'LSL', 'AZN', 'MZN', 'NGN', 'ERN', 'TWD', 'PEN', 'MRO', 'TOP', 'MOP', 'ARS', 'DOP', 'COP', 'UYU',
-        'BWP', 'GTQ', 'IRR', 'YER', 'QAR', 'OMR', 'SAR', 'KHR', 'BYN', 'LKR', 'MVR', 'MUR', 'NPR', 'PKR', 'SCR',
-        'KGS', 'TJS', 'UZS', 'KES', 'SOS', 'TZS', 'UGX', 'BDT', 'WST', 'KZT', 'MNT', 'VUV', 'BAM', 'SSP', 'TMT',
-        'CUP', 'STN', 'MRU', 'VES',
-    ];
-
     /** @var string */
     protected $exchangeTo;
 
@@ -60,7 +46,7 @@ class CurrencyExchange
      */
     protected function exchangeTo(string $currencyIso): self
     {
-        if (!in_array($currencyIso, $this->supportedCurrencies)) {
+        if (!Currency::isSupported($currencyIso)) {
             throw new \InvalidArgumentException("$currencyIso is not supported");
         }
 
