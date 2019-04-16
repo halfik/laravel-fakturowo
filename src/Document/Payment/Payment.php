@@ -17,7 +17,7 @@ class Payment
 
     /** @var PaymentDate */
     protected $paymentDate;
-    /** @var PaymentDeadline */
+    /** @var PaymentDeadline|null */
     protected $paymentDeadline;
 
     /** @var array */
@@ -39,19 +39,19 @@ class Payment
      * @param PaymentMethod $method
      * @param PaymentStatus $status
      * @param PaymentDate $date
-     * @param PaymentDeadline $deadline
+     * @param PaymentDeadline|null $deadline
      */
     public function __construct(
         float $paidAmount,
         PaymentMethod $method,
         PaymentStatus $status,
         PaymentDate $date,
-        PaymentDeadline $deadline
+        ?PaymentDeadline $deadline
     )
     {
         $this->method = $method;
         $this->status = $status;
-        $this->setPaidAmount($paidAmount, true);
+        $this->setPaidAmount($paidAmount, false);
         $this->markAsPaid();
         $this->setDescription('', false);
         $this->setPaymentDate($date);
@@ -76,18 +76,18 @@ class Payment
     }
 
     /**
-     * @return PaymentDeadline
+     * @return PaymentDeadline|null
      */
-    public function paymentDeadline(): PaymentDeadline
+    public function paymentDeadline(): ?PaymentDeadline
     {
         return $this->paymentDeadline;
     }
 
     /**
-     * @param PaymentDeadline $paymentDeadline
+     * @param PaymentDeadline|null $paymentDeadline
      * @return Payment
      */
-    public function setPaymentDeadline(PaymentDeadline $paymentDeadline): Payment
+    public function setPaymentDeadline(?PaymentDeadline $paymentDeadline): Payment
     {
         $this->paymentDeadline = $paymentDeadline;
         return $this;
@@ -176,9 +176,13 @@ class Payment
             ],
             $this->method->toArray(),
             $this->status->toArray(),
-            $this->paymentDate()->toArray(),
-            $this->paymentDeadline()->toArray()
+            $this->paymentDate()->toArray()
         );
+
+        // payment deadline
+        if ($this->paymentDeadline()) {
+            $data = array_merge($data,   $this->paymentDeadline()->toArray());
+        }
 
         /**
          * @var int $i

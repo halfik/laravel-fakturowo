@@ -30,7 +30,6 @@ class Signature
      */
     public function toArray(string $prefix): array
     {
-        $key = sprintf('%s_dowod', $prefix);
         return [
             sprintf('%s_podpis', $prefix) => $this->signature,
             sprintf('%s_pokaz_podpis', $prefix) => (int) $this->show,
