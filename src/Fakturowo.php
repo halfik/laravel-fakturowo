@@ -28,7 +28,7 @@ class Fakturowo
     {
         $data = $this->prepareData($document);
         $data['api_zadanie'] = 1;
-        dd($data);
+        
         return $this->execute($data);
     }
 
