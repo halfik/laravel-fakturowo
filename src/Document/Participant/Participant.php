@@ -28,6 +28,8 @@ abstract class Participant
     protected $signature;
     /** @var int */
     protected $markedAs;
+    /** @var int */
+    protected $dataMarkedAs;
     /** @var string */
     protected $additionalData;
 
@@ -46,7 +48,8 @@ abstract class Participant
         $this->phone = '';
         $this->fax = '';
         $this->www = '';
-        $this->markedAs = 0;
+        $this->markedAs = 22;
+        $this->dataMarkedAs = 22;
         $this->additionalData = '';
     }
 
@@ -217,6 +220,14 @@ abstract class Participant
     }
 
     /**
+     * @return int
+     */
+    public function dataMarkedAs(): int
+    {
+        return $this->dataMarkedAs;
+    }
+
+    /**
      * @return string
      */
     public function additionalData(): string
@@ -249,6 +260,16 @@ abstract class Participant
     }
 
     /**
+     * @param int $type
+     * @return Participant
+     */
+    public function markDataAs(int $type): self
+    {
+        $this->dataMarkedAs = $type;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -260,7 +281,7 @@ abstract class Participant
             sprintf('%s_fax', $this->prefix()) => $this->fax(),
             sprintf('%s_www', $this->prefix()) => $this->www(),
             sprintf('%s_oznaczenie', $this->prefix()) => $this->markedAs(),
-            sprintf('%s_dane_oznaczenie', $this->prefix()) => $this->markedAs(),
+            sprintf('%s_dane_oznaczenie', $this->prefix()) => $this->dataMarkedAs(),
         ];
 
         // Id
