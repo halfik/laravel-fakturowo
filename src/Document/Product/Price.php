@@ -8,6 +8,10 @@ namespace Halfik\Fakturowo\Document\Product;
  */
 class Price
 {
+    const VAT_RATE_NP = 'np';
+    const VAR_RATE_ZW = 'zw';
+    const VAT_RATE_OO = 'oo';
+
     /** @var float */
     protected $value;
     /** @var string */
